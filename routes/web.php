@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use HansSchouten\LaravelPageBuilder\LaravelPageBuilder;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 if(env('INSTALLATION', false) == true){
@@ -37,6 +38,7 @@ if (config('pagebuilder.website_manager.use_website_manager')) {
 
 } 
 
+Route::group(['middleware' => ['web', 'auth']], function(){
 
 if ( config('pagebuilder.pagebuilder.use_pagebuilder') ) {
     // handle all website manager requests
@@ -48,6 +50,12 @@ if ( config('pagebuilder.pagebuilder.use_pagebuilder') ) {
 
    })->where('any', '.*');
 }
+
+});
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+->middleware('guest')
+->name('login');
 
 if (config('pagebuilder.router.use_router')) {
 
