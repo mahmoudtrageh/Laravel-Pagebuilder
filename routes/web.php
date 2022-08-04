@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use HansSchouten\LaravelPageBuilder\LaravelPageBuilder;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Middleware\VerifyCsrfToken;
 
 
 if(env('INSTALLATION', false) == true){
@@ -48,7 +49,7 @@ if ( config('pagebuilder.pagebuilder.use_pagebuilder') ) {
       
        $builder->handleRequest();
 
-   })->where('any', '.*');
+   })->where('any', '.*')->withoutMiddleware([VerifyCsrfToken::class]);
 }
 
 });
